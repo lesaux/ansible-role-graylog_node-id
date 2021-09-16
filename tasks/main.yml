@@ -1,0 +1,9 @@
+---
+- name: Check that the graylog node-id exists
+  stat:
+    path: "{{ graylog_node_id_file }}"
+  register: stat_result
+
+- name: Generate node-id file
+  shell: "cat /proc/sys/kernel/random/uuid | tee {{ graylog_node_id_file }}"
+  when: not stat_result.stat.exists
